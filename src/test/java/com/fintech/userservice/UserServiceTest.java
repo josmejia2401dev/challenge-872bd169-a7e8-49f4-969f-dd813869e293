@@ -2,16 +2,29 @@ package com.fintech.userservice;
 
 import com.fintech.userservice.application.UserService;
 import com.fintech.userservice.domain.User;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@AutoConfigureDataMongo
 public class UserServiceTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @BeforeEach
+    public void cleanDatabase() {
+        mongoTemplate.dropCollection(User.class);
+    }
 
     @Test
     public void testCreateUser() {
